@@ -1,2 +1,10 @@
 Library
 Temp
+*.tmproj
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.userprefs
