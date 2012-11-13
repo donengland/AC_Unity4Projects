@@ -1,2 +1,28 @@
+<<<<<<< HEAD
 Library
 Temp
+=======
+<<<<<<< HEAD
+Library
+Temp
+*.tmproj
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.pidb
+=======
+Library
+Temp
+obj
+*.tmproj
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.pidb
+>>>>>>> temp
+*.userprefs
+>>>>>>> develop
