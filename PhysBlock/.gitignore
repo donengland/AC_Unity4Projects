@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Library
 Temp
 *.tmproj
@@ -7,4 +8,16 @@ Temp
 *.suo
 *.user
 *.pidb
+=======
+Library
+Temp
+obj
+*.tmproj
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.pidb
+>>>>>>> temp
 *.userprefs
