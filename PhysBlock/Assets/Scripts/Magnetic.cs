@@ -3,15 +3,15 @@ using System.Collections;
 
 public class Magnetic : MonoBehaviour {
 	
-	private bool colliding = false;
 	private bool inTrigger;
-	private bool islockedz = false;
-	private bool islockedy = false;
-	private Collider CurrentField;
+	private int triggerCount;
+	private bool isLocked;
+	private bool iscolliding;
 
 	// Use this for initialization
 	void Start () {
 		
+		triggerCount = 0;
 	
 	}
 	
@@ -23,45 +23,87 @@ public class Magnetic : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		
+		//Debug.Log (triggerCount);
+		//Debug.Log (gameObject.transform.position);
+		
 		if(!inTrigger)
 		{
-			gameObject.rigidbody.useGravity = true;
+			if(gameObject.rigidbody.useGravity == false)
+			{
+				gameObject.rigidbody.useGravity = true;
+			}
 		}
 		
 		inTrigger = false;
 	
 	}
 	
+	void OnTriggerEnter(Collider MagField)
+	{
+		triggerCount = triggerCount + 1;
+	}
+	
+	void OnTriggerExit(Collider MagField)
+	{
+		triggerCount = triggerCount - 1;
+		isLocked = false;
+	}
+	
+	void triggerInactive()
+	{
+		//Debug.Log ("triggerInactive called");
+		triggerCount = triggerCount - 1;
+		isLocked = false;
+	}
+	
 	
 	void OnTriggerStay(Collider MagField)
 	{
 		inTrigger = true;
-		if(MagField.name == "MagneticPullZ")
+		if(isLocked)
 		{
 			gameObject.rigidbody.useGravity = false;
-			gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, MagField.attachedRigidbody.position, .01f);
-			
+			gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, MagField.transform.position, .01f);
 		}
-		if(MagField.name == "MagneticPullY")
+		else
 		{
 			gameObject.rigidbody.useGravity = false;
-			gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, MagField.attachedRigidbody.position, .01f);
+			
+			if(MagField.name == "MagneticPullY")
+			{
+				if(gameObject.transform.position.x == MagField.transform.position.x)
+				{
+					isLocked = true;
+				}
+				gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position,
+					new Vector3(MagField.transform.position.x, gameObject.transform.position.y,
+					gameObject.transform.position.z), .01f);
+			}
+			
+			if(MagField.name == "MagneticPullX")
+			{
+				if(gameObject.transform.position.y == MagField.transform.position.y)
+				{
+					isLocked = true;
+				}
+				gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position,
+					new Vector3(gameObject.transform.position.x, MagField.transform.position.y,
+					gameObject.transform.position.z), .01f);
+			}
 		}
 	}
 	
-	void OnCollisionEnter(Collision col)
+	void OnCollisionEnter(Collision surface)
 	{
-			
-	}
-	
-	void OnCollisionExit(Collision col)
-	{
-
+		iscolliding = true;
 	}
 	
 	
-	public void LockTransform(Collider Field)
+	void OnCollisionExit(Collision surface)
 	{
-	
+		iscolliding = false;
 	}
+	
+	
+	
 }

@@ -23,9 +23,10 @@ public class Click : MonoBehaviour {
 		{
 			if (Physics.Raycast(ray, out hit, Mathf.Infinity) && hit.transform != null)
 			{
-				if(hit.collider.gameObject.name == "BaseCube")
+				//Debug.Log (hit.collider.gameObject.name);
+				if(hit.collider.gameObject.name == "Cube")
 				{
-					//Debug.Log (hit.collider.gameObject.name);
+					Debug.Log (hit.collider.gameObject.name);
 					
 					hit.collider.gameObject.SendMessage ("changeMagnetic");	
 				}
