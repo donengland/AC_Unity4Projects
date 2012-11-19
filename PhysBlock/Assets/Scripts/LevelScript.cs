@@ -16,18 +16,7 @@ public class LevelScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		myPBloks = new List<GameObject>();
-		for(int i = 0; i < width; i++){
-			for(int j = 0; j < height; j++){
-				GameObject tempObj = Instantiate(Resources.Load("PBlok", typeof(GameObject))) as GameObject;
-				tempObj.name = "Cell" +i.ToString() + j.ToString();
-				tempObj.transform.position = new Vector3(i,j,0);
-				tempObj.transform.parent = gameObject.transform;
-				myPBloks.Add( tempObj );
-			}
-		}
-		lastWidth  = width;
-		lastHeight = height;
+		CreateLevel();
 	}
 	
 	// Update is called once per frame
@@ -38,23 +27,44 @@ public class LevelScript : MonoBehaviour {
 		UpdateLevel ();
 	}
 	
-	public void UpdateLevel () {
-		if( (width != lastWidth) || (height != lastHeight)){
+	void OnDisable(){
+		if(Application.isEditor){
 			foreach (GameObject element in myPBloks){
 				DestroyImmediate (element);
 			}
-			myPBloks = new List<GameObject>();
-			for(int i = 0; i < width; i++){
-				for(int j = 0; j < height; j++){
-					GameObject tempObj = Instantiate(Resources.Load("PBlok", typeof(GameObject))) as GameObject;
+			myPBloks   = null;
+			lastWidth  = 0;
+			lastHeight = 0;
+		}
+	}
+	
+	public void UpdateLevel () {
+		if( (myPBloks == null) || (width != lastWidth) || (height != lastHeight)){
+			foreach (GameObject element in myPBloks){
+				DestroyImmediate (element);
+			}
+			CreateLevel();
+		}
+	}
+	
+	void CreateLevel(){
+		myPBloks = new List<GameObject>();
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j < height; j++){
+				GameObject tempObj;
+				tempObj = GameObject.Find("Cell"+i.ToString() + j.ToString());
+				if(tempObj != null){
+					// Object already exists
+				}else{
+					tempObj = Instantiate(Resources.Load("PBlok", typeof(GameObject))) as GameObject;
 					tempObj.name = "Cell" +i.ToString() + j.ToString();
 					tempObj.transform.position = new Vector3(i,j,0);
 					tempObj.transform.parent = gameObject.transform;
-					myPBloks.Add( tempObj );
 				}
+				myPBloks.Add( tempObj );
 			}
-			lastWidth  = width;
-			lastHeight = height;			
 		}
+		lastWidth  = width;
+		lastHeight = height;		
 	}
 }
