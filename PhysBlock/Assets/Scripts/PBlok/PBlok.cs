@@ -1,14 +1,15 @@
+using System;
 using UnityEngine;
 using System.Collections;
 
-[ExecuteInEditMode]
+[ExecuteInEditMode, Serializable]
 public class PBlok : MonoBehaviour {
 	
 	// =========
 	// Enums from shared constants
-	private PBlokConstants.blokPotency myPotency  = PBlokConstants.blokPotency.modify;
+	public  PBlokConstants.blokPotency myPotency  = PBlokConstants.blokPotency.modify;
 	private PBlokConstants.blokPotency oldPotency = PBlokConstants.blokPotency.modify;
-	private PBlokConstants.blokAct myAct  = PBlokConstants.blokAct.empty;
+	public  PBlokConstants.blokAct myAct  = PBlokConstants.blokAct.empty;
 	private PBlokConstants.blokAct oldAct = PBlokConstants.blokAct.empty;
 	
 	// Quick query for movement type if naming system gets implemented
@@ -22,20 +23,26 @@ public class PBlok : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		appearance = Instantiate(Resources.Load("EmptyMPBlok", typeof(GameObject))) as GameObject;
-		appearance.transform.position = gameObject.transform.position;
-		appearance.transform.parent = gameObject.transform;
-		//myPBlok = new IcyPBlok(gameObject);
-		//gameObject.renderer.material = materialX;
+		changeInterface();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	}
+	void Awake(){
+		if(Application.isPlaying && myAct == PBlokConstants.blokAct.empty)
+			Destroy (gameObject);
+	}
+	
+	public void UpdateBlok(){
+		if(myAct != oldAct || myPotency != oldPotency)
+			changeInterface();
+	}
 	
 	void changeInterface(){
-		// Destroy previous appearance
-		Destroy(appearance);
+		foreach(Transform child in transform){
+			DestroyImmediate (child.gameObject);
+		}
 		
 		// There are not this many different ways to behave,
 		// only this many different ways to be seen		
@@ -106,9 +113,13 @@ public class PBlok : MonoBehaviour {
 				break;
 		}
 		
+		// Update previous instance
+		oldAct = myAct;
+		oldPotency = myPotency;
 		// Ensure proper placement of new appearance, and child it
 		appearance.transform.position = gameObject.transform.position;
 		appearance.transform.parent = gameObject.transform;
+		//appearance.AddComponent<PBlokSwitcher>();
 	}
 	
 	void performGetType(){
@@ -119,17 +130,8 @@ public class PBlok : MonoBehaviour {
 		myTarget = target;
 	}
 	
-	// editor access only, gameplay 'should' not change potency
-	void setPotency(PBlokConstants.blokPotency potency){
-		myPotency = potency;
-		changeInterface();
-	}
-	PBlokConstants.blokPotency getPotency(){
-		return myPotency;
-	}
-	
 	// in-game change requests
-	void requestChangeAct(PBlokConstants.blokAct act){
+	public void requestChangeAct(PBlokConstants.blokAct act){
 		if(myPotency == PBlokConstants.blokPotency.modify){
 			setAct (act);
 		}
@@ -139,12 +141,21 @@ public class PBlok : MonoBehaviour {
 				+ "( " + act + " ) object unmodifiable");
 		}
 	}
-	// editor direct access
-	void setAct(PBlokConstants.blokAct act){
+	
+	
+	// editor has direct access -- but 'child' needs access
+	public void setPotency(PBlokConstants.blokPotency potency){
+		myPotency = potency;
+		changeInterface();
+	}
+	public PBlokConstants.blokPotency getPotency(){
+		return myPotency;
+	}
+	public void setAct(PBlokConstants.blokAct act){
 		myAct = act;
 		changeInterface();
 	}
-	PBlokConstants.blokAct getAct(){
+	public PBlokConstants.blokAct getAct(){
 		return myAct;
 	}
 }

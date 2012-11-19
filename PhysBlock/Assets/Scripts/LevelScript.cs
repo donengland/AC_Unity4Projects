@@ -39,29 +39,47 @@ public class LevelScript : MonoBehaviour {
 	}
 	
 	public void UpdateLevel () {
-		if( (myPBloks == null) || (width != lastWidth) || (height != lastHeight)){
-			foreach (GameObject element in myPBloks){
-				DestroyImmediate (element);
+		// Sanity Check
+		if(height <= 1)
+			height = 1;
+		if(width <= 1)
+			width = 1;
+		
+		// Modified check
+		if(width < lastWidth){
+			for(int i = lastWidth; width <= i; i--){
+				for(int j = 0; j <= lastHeight; j++){
+					DestroyImmediate ((GameObject.Find("Cell"+i.ToString()+"-"+j.ToString())));
+				}
 			}
-			CreateLevel();
 		}
+		if(height < lastHeight){
+			for(int j = lastHeight; height <= j; j--){
+				for(int i = 0; i <= lastWidth; i++){
+					DestroyImmediate ((GameObject.Find("Cell"+i.ToString()+"-"+j.ToString())));
+				}
+			}
+		}
+		CreateLevel();
 	}
 	
 	void CreateLevel(){
 		myPBloks = new List<GameObject>();
 		for(int i = 0; i < width; i++){
 			for(int j = 0; j < height; j++){
-				GameObject tempObj;
-				tempObj = GameObject.Find("Cell"+i.ToString() + j.ToString());
-				if(tempObj != null){
+				GameObject cellObj;
+				cellObj = GameObject.Find("Cell"+i.ToString() + "-" + j.ToString());
+				if(cellObj != null){
 					// Object already exists
 				}else{
-					tempObj = Instantiate(Resources.Load("PBlok", typeof(GameObject))) as GameObject;
-					tempObj.name = "Cell" +i.ToString() + j.ToString();
+					cellObj = new GameObject("Cell" +i.ToString() + "-" + j.ToString());
+					cellObj.transform.position = new Vector3(i,j,0);
+					cellObj.transform.parent = gameObject.transform;
+					GameObject tempObj = Instantiate(Resources.Load("PBlok", typeof(GameObject))) as GameObject;
 					tempObj.transform.position = new Vector3(i,j,0);
-					tempObj.transform.parent = gameObject.transform;
+					tempObj.transform.parent = cellObj.transform;
 				}
-				myPBloks.Add( tempObj );
+				myPBloks.Add( cellObj );
 			}
 		}
 		lastWidth  = width;
