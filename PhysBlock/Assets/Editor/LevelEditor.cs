@@ -6,11 +6,13 @@ using System.Collections;
 public class LevelEditor : Editor {
 	
 	private SerializedObject level;
-	private SerializedProperty value;
+	private SerializedProperty width;
+	private SerializedProperty height;
 	
 	void OnEnable(){
-		level = new SerializedObject(target);
-		value = level.FindProperty("value");
+		level  = new SerializedObject(target);
+		width  = level.FindProperty("width");
+		height = level.FindProperty("height");
 	}
 
 	void OnSceneGUI(){
@@ -22,13 +24,19 @@ public class LevelEditor : Editor {
 		// Handles--to wrap GUI controls--between .BeginGUI && .EndGUI
         Handles.color = Color.blue;
         Handles.BeginGUI();
-			GUI.Box (new Rect(10, 10, 90,100), "Reset Area");
-			if(GUI.Button (new Rect (20,40,80,20), "value += 1"))
-				value.intValue++;
-			if(GUI.Button (new Rect (20,70,80,20), "value += 2"))
-				value.intValue += 2;		
+			GUI.Box (new Rect(10, 10, 100,160), "Set Level Area");
+			if(GUI.Button (new Rect (20,40,80,20), "Width ++"))
+				width.intValue++;
+			if(GUI.Button (new Rect (20,70,80,20), "Width --"))
+				width.intValue--;		
+			if(GUI.Button (new Rect (20,100,80,20), "Height ++"))
+				height.intValue++;
+			if(GUI.Button (new Rect (20,130,80,20), "Height --"))
+				height.intValue--;		
 		
-			level.ApplyModifiedProperties();
+			if(level.ApplyModifiedProperties()){
+				((LevelScript)target).UpdateLevel();
+			}
         Handles.EndGUI();
 	}
 }

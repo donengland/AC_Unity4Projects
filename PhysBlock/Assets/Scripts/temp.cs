@@ -8,6 +8,7 @@ public class temp : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myChild = Instantiate(Resources.Load("IceCube", typeof(GameObject))) as GameObject;
+		myChild.transform.position = gameObject.transform.position;
 		myChild.transform.parent = gameObject.transform;
 	}
 	
@@ -16,6 +17,7 @@ public class temp : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space)){
 			Destroy(myChild);
 			myChild = Instantiate (Resources.Load("GreenCube", typeof(GameObject))) as GameObject;
+			myChild.transform.position = gameObject.transform.position;
 			myChild.transform.position += new Vector3 (1,1,1);
 			myChild.transform.parent = gameObject.transform;
 		}

@@ -18,6 +18,7 @@ public static class PBlokConstants {
 		surface_magnetic,
 		block_normal, // act 'duplicated' here for 'normal'
 		block_heavy,
-		block_frozen
+		block_frozen,
+		block_death
 	};
 }

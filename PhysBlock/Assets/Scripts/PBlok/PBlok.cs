@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class PBlok : MonoBehaviour {
 	
 	// =========
@@ -16,9 +17,14 @@ public class PBlok : MonoBehaviour {
 	private IPBlokType myPBlok; // My current block implementation
 	private Vector3 myTarget;   // target location for movement
 	private float waitTime;     // wait time before moving to target
+	
+	private GameObject appearance;
 
 	// Use this for initialization
 	void Start () {
+		appearance = Instantiate(Resources.Load("EmptyMPBlok", typeof(GameObject))) as GameObject;
+		appearance.transform.position = gameObject.transform.position;
+		appearance.transform.parent = gameObject.transform;
 		//myPBlok = new IcyPBlok(gameObject);
 		//gameObject.renderer.material = materialX;
 	}
@@ -28,31 +34,37 @@ public class PBlok : MonoBehaviour {
 	}
 	
 	void changeInterface(){
+		// Destroy previous appearance
+		Destroy(appearance);
+		
 		// There are not this many different ways to behave,
-		// only this many different ways to be seen
+		// only this many different ways to be seen		
 		switch(myPotency){
 			case PBlokConstants.blokPotency.modify:
 				switch(myAct){
 					case PBlokConstants.blokAct.block_heavy:
-						myPBlok = new HeavyMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("HeavyMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.block_normal:
-						myPBlok = new NormalMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("NormalMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.empty:
-						myPBlok = new EmptyMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("EmptyMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.block_frozen:
-						myPBlok = new FrozenMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("FrozenMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.surface_frozen:
-						myPBlok = new FrozenMPSurf(gameObject);
+						appearance = Instantiate(Resources.Load("FrozenMPSurf", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.surface_magnetic:
-						myPBlok = new MagneticMPSurf(gameObject);
+						appearance = Instantiate(Resources.Load("MagneticMPSurf", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.surface_normal:
-						myPBlok = new NormalMPSurf(gameObject);
+						appearance = Instantiate(Resources.Load("NormalMPSurf", typeof(GameObject))) as GameObject;
+						break;
+					case PBlokConstants.blokAct.block_death:
+						appearance = Instantiate(Resources.Load("DeathNMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					default:
 						break;
@@ -61,27 +73,30 @@ public class PBlok : MonoBehaviour {
 			case PBlokConstants.blokPotency.no_modify:
 				switch(myAct){
 					case PBlokConstants.blokAct.block_heavy:
-						myPBlok = new HeavyNMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("HeavyNMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.block_normal:
-						myPBlok = new NormalNMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("NormalNMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					// Duplicate case from modify branch
 					case PBlokConstants.blokAct.empty:
-						myPBlok = new EmptyMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("EmptyMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					// ^^
 					case PBlokConstants.blokAct.block_frozen:
-						myPBlok = new FrozenNMPBlok(gameObject);
+						appearance = Instantiate(Resources.Load("FrozenNMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.surface_frozen:
-						myPBlok = new FrozenNMPSurf(gameObject);
+						appearance = Instantiate(Resources.Load("FrozenNMPSurf", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.surface_magnetic:
-						myPBlok = new MagneticNMPSurf(gameObject);
+						appearance = Instantiate(Resources.Load("MagneticNMPSurf", typeof(GameObject))) as GameObject;
 						break;
 					case PBlokConstants.blokAct.surface_normal:
-						myPBlok = new NormalNMPSurf(gameObject);
+						appearance = Instantiate(Resources.Load("NormalNMPSurf", typeof(GameObject))) as GameObject;
+						break;
+					case PBlokConstants.blokAct.block_death:
+						appearance = Instantiate(Resources.Load("DeathNMPBlok", typeof(GameObject))) as GameObject;
 						break;
 					default:
 						break;
@@ -90,6 +105,10 @@ public class PBlok : MonoBehaviour {
 			default:
 				break;
 		}
+		
+		// Ensure proper placement of new appearance, and child it
+		appearance.transform.position = gameObject.transform.position;
+		appearance.transform.parent = gameObject.transform;
 	}
 	
 	void performGetType(){
@@ -116,8 +135,8 @@ public class PBlok : MonoBehaviour {
 		}
 		else{
 			Debug.Log("Invalid request for change on "
-				+ gameObject.name
-				+ "(" + act + ") object unmodifiable");
+				+ gameObject.name + "from ( " + myAct + " )" + " to "
+				+ "( " + act + " ) object unmodifiable");
 		}
 	}
 	// editor direct access
