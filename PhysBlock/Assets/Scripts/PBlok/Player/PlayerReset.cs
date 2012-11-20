@@ -1,0 +1,28 @@
+/**** @author: Don England
+	* @since: 20-Nov-2012
+	*/
+
+using UnityEngine;
+using System.Collections;
+
+public class PlayerReset : MonoBehaviour {
+	
+	public LangmanController playerScript;
+	
+	// Use this for initialization
+	void Start () {
+		playerScript = GameObject.Find ("PlayerSphere").GetComponent<LangmanController>();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+	
+	void OnTriggerEnter(Collider col){
+		Debug.Log("In Collider Enter, presumably respawning player");
+		Debug.Log(col.gameObject.name);
+		if(col.gameObject.transform.parent.gameObject.name == "Player")
+			playerScript.Spawn();
+	}
+}
