@@ -36,6 +36,9 @@ var canControl = true;
 // The character will spawn at spawnPoint's position when needed.  This could be changed via a script at runtime to implement, e.g. waypoints/savepoints.
 var spawnPoint : Transform;
 
+//Need an animator to use mechanim animations
+private var animator : Animator;
+
 class LangmanControllerMovement {
 	// The speed when running 
 	var runSpeed = 7.0;
@@ -159,7 +162,11 @@ private var sprite : GameObject;
 function Awake () {
 	movement.direction = transform.TransformDirection (Vector3.forward);
 	controller = GetComponent (CharacterController) as CharacterController;
-	sprite = GameObject.Find("PlayerSphere");
+	sprite = GameObject.Find("spherebot_anim_16");
+}
+
+function Start (){
+	animator = GetComponent(Animator) as Animator;
 }
 
 function Spawn () {
@@ -211,7 +218,9 @@ function UpdateSmoothedMovementDirection () {
 	}
 	
 	movement.speed = Mathf.Lerp (movement.speed, targetSpeed, curSmooth);
+	//animator.SetFloat("Speed",movement.speed);
 }
+
 
 function AnimateCharacter() {
 	// For an example of animating a sprite sheet, see:
@@ -221,6 +230,7 @@ function AnimateCharacter() {
 	}else if(controller.isGrounded){
 		// stand
 	}
+	
 }
 
 function JustBecameUngrounded() {
@@ -230,7 +240,8 @@ function JustBecameUngrounded() {
 function ApplyJumping () {
 	if (Input.GetButtonDown ("Jump") && canControl) {
 		jump.lastButtonTime = Time.time;
-	}
+		animator.SetBool("Jump",true);
+	} else animator.SetBool("Jump",false);
 
 	// Prevent jumping too fast after each other
 	if (jump.lastTime + jump.repeatTime > Time.time){
@@ -379,6 +390,7 @@ function Update () {
 	// Calculate the velocity based on the current and previous position.  
 	// This means our velocity will only be the amount the character actually moved as a result of collisions.
 	movement.velocity = (transform.position - lastPosition) / Time.smoothDeltaTime;
+	animator.SetFloat("Speed", Mathf.Abs(movement.velocity.x));
 	
 	// Moving platforms support
 	if (activePlatform != null) {

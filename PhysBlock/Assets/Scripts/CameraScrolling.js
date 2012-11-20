@@ -74,7 +74,7 @@ function GetGoalPosition () {
 		return trans.position;
 		
 	// First do a rough goalPosition that simply follows the target at a certain relative height and distance.
-	var goalPosition = target.position + Vector3 (0, heightOffset, -distance * distanceModifier);
+	var goalPosition = target.position + Vector3 (0, heightOffset,-distance * distanceModifier);
 	
 	// Next, we refine our goalPosition by taking into account our target's current velocity.
 	// This will make the camera slightly look ahead to wherever the character is going.
@@ -95,10 +95,10 @@ function GetGoalPosition () {
 	// We clamp the lookAhead vector to some sane values so that the target doesn't go offscreen.
 	// This calculation could be more advanced (lengthy), taking into account the target's viewport position,
 	// but this works pretty well in practice.
-	lookAhead.x = Mathf.Clamp (lookAhead.x, -maxLookAhead.x, maxLookAhead.x);
+	lookAhead.z = Mathf.Clamp (lookAhead.x, -maxLookAhead.x, maxLookAhead.x);
 	lookAhead.y = Mathf.Clamp (lookAhead.y, -maxLookAhead.y, maxLookAhead.y);
 	// We never want to take z velocity into account as this is 2D.  Just make sure it's zero.
-	lookAhead.z = 0.0;
+	lookAhead.x = 0.0;
 	
 	// Now add in our lookAhead calculation.  Our camera following is now a bit better!
 	goalPosition += lookAhead;
