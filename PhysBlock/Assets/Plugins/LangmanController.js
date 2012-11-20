@@ -162,7 +162,7 @@ private var sprite : GameObject;
 function Awake () {
 	movement.direction = transform.TransformDirection (Vector3.forward);
 	controller = GetComponent (CharacterController) as CharacterController;
-	sprite = GameObject.Find("spherebot_anim_16");
+	sprite = GameObject.Find("PlayerSphere");
 }
 
 function Start (){
