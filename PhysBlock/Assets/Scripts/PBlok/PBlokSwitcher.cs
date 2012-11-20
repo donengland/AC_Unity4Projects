@@ -20,7 +20,7 @@ public class PBlokSwitcher : MonoBehaviour {
 		//myPBlok.requestChangeAct(myAct);
 	}
 	
-	void UpdateBlok(){
+	public void UpdateBlok(){
 		myPBlok.setAct(myAct);
 		myPBlok.setPotency(myPotency);
 	}

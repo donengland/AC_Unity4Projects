@@ -119,7 +119,7 @@ public class PBlok : MonoBehaviour {
 		// Ensure proper placement of new appearance, and child it
 		appearance.transform.position = gameObject.transform.position;
 		appearance.transform.parent = gameObject.transform;
-		//appearance.AddComponent<PBlokSwitcher>();
+		appearance.AddComponent<PBlokSwitcher>();
 	}
 	
 	void performGetType(){
