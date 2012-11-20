@@ -1,3 +1,7 @@
+/**** @author: Don England
+	* @since: 20-Nov-2012
+	*/
+
 using System;
 using UnityEngine;
 using System.Collections;

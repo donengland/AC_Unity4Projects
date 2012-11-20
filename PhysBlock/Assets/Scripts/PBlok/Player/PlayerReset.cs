@@ -1,3 +1,7 @@
+/**** @author: Don England
+	* @since: 20-Nov-2012
+	*/
+
 using UnityEngine;
 using System.Collections;
 
@@ -15,8 +19,10 @@ public class PlayerReset : MonoBehaviour {
 	
 	}
 	
-	void OnTriggerEnter(){
+	void OnTriggerEnter(Collider col){
 		Debug.Log("In Collider Enter, presumably respawning player");
-		playerScript.Spawn();
+		Debug.Log(col.gameObject.name);
+		if(col.gameObject.transform.parent.gameObject.name == "Player")
+			playerScript.Spawn();
 	}
 }

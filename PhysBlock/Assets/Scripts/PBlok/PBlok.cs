@@ -1,3 +1,7 @@
+/**** @author: Don England
+	* @since: 20-Nov-2012
+	*/
+
 using System;
 using UnityEngine;
 using System.Collections;
@@ -29,9 +33,28 @@ public class PBlok : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	}
+	
+	void FixedUpdate(){
+		
+	}
 	void Awake(){
-		if(Application.isPlaying && myAct == PBlokConstants.blokAct.empty)
-			Destroy (gameObject);
+		if(Application.isPlaying){
+			if(myAct == PBlokConstants.blokAct.empty)
+				Destroy (gameObject);
+			if( myAct == PBlokConstants.blokAct.block_normal ||
+				myAct == PBlokConstants.blokAct.block_frozen ||
+				myAct == PBlokConstants.blokAct.block_heavy){
+				gameObject.AddComponent<Rigidbody>();
+				rigidbody.constraints =  RigidbodyConstraints.FreezeRotationX
+					| RigidbodyConstraints.FreezeRotationY
+					| RigidbodyConstraints.FreezeRotationZ
+					| RigidbodyConstraints.FreezePositionZ;
+			}
+			if(myAct == PBlokConstants.blokAct.block_death){
+				collider.isTrigger = true;
+				gameObject.AddComponent<PlayerReset>();
+			}
+		}
 	}
 	
 	public void UpdateBlok(){
@@ -119,6 +142,8 @@ public class PBlok : MonoBehaviour {
 		// Ensure proper placement of new appearance, and child it
 		appearance.transform.position = gameObject.transform.position;
 		appearance.transform.parent = gameObject.transform;
+		
+		// add editor functionality callbacks via PBlokSwitcher
 		appearance.AddComponent<PBlokSwitcher>();
 	}
 	
@@ -157,5 +182,10 @@ public class PBlok : MonoBehaviour {
 	}
 	public PBlokConstants.blokAct getAct(){
 		return myAct;
+	}
+	
+	void OnCollisionEnter(Collision col){
+		Debug.Log(gameObject.transform.parent.gameObject.name + " is colliding with " +
+			col.gameObject.transform.parent.gameObject.name);
 	}
 }
