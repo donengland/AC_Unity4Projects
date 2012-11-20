@@ -7,11 +7,14 @@ public class Magnetic : MonoBehaviour {
 	private int triggerCount;
 	private bool isLocked;
 	private bool iscolliding;
+	
+	private bool wasPainted;
 
 	// Use this for initialization
 	void Start () {
 		
 		triggerCount = 0;
+		wasPainted = false;
 	
 	}
 	
@@ -103,6 +106,8 @@ public class Magnetic : MonoBehaviour {
 	{
 		iscolliding = false;
 	}
+	
+
 	
 	
 	

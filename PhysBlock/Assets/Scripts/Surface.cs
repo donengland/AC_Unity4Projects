@@ -4,10 +4,14 @@ using System.Collections;
 public class Surface : MonoBehaviour {
 	
 	private bool isMagnetic;
+	private bool isFrozen;
+	public Material Frozen;
+	public Material Normal;
 
 	// Use this for initialization
 	void Start () {
 		removeMagnetic ();
+		isFrozen = false;
 	
 	}
 	
@@ -15,6 +19,19 @@ public class Surface : MonoBehaviour {
 	void Update () {
 		
 	
+	}
+	void changeFrozen()
+	{
+		if(isFrozen)
+		{
+			gameObject.renderer.material = Normal;
+			isFrozen = false;
+		}
+		else
+		{
+			gameObject.renderer.material = Frozen;
+			isFrozen = true;
+		}
 	}
 	
 	void changeMagnetic()
@@ -24,20 +41,19 @@ public class Surface : MonoBehaviour {
 		{
 			foreach (Transform child in transform)
 			{
-				setTriggerInactive();
-			    child.gameObject.SetActive(false);
+				child.gameObject.SetActive (false);
 				this.isMagnetic = false;
 			}
 		}
 		
 		else
 		{
+			//Destroy(gameObject.GetComponent<SurfaceMagnet>());
 			foreach (Transform child in transform)
 			{
-			    child.gameObject.SetActive(true);
+				child.gameObject.SetActive (true);
 				this.isMagnetic = true;
 			}
-			
 		}
 	}
 	
