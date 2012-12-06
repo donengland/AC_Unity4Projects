@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Move : MonoBehaviour {
 	
-	private bool isMoving;
+	public bool isMoving;
 	
 
 	// Use this for initialization
@@ -22,6 +22,7 @@ public class Move : MonoBehaviour {
 	IEnumerator moveTo(GameObject Target)
 	{
 		Vector3 Direction = findDirection(Target);
+		isMoving = true;
 		
 		//Debug.Log (Vector3.Distance (transform.position, Target.transform.position));
 		//int loopLength = Mathf.Abs (transform.position.x - Target.transform.position);
@@ -32,13 +33,18 @@ public class Move : MonoBehaviour {
 		
 		for(int i = 0; i < loopLength - 1; i++)
 		{
-			if(isFreetoMove (Direction))
+			if(!isFreetoMove (Direction))
 			{
-				Debug.Log("Testing");
+				isMoving = false;
+				yield break;
+			}
+			else
+			{
+				//Debug.Log("Testing");
 				yield return StartCoroutine(moveOne(Direction));
 			}	
 		}
-		Debug.Log ("MoveToComplete");
+		isMoving = false;
 	}
 	
 	IEnumerator moveOne(Vector3 Direction)
@@ -46,21 +52,44 @@ public class Move : MonoBehaviour {
 		//Already know we're free to move in Direction, just going to move 1 space over
 		if(Direction == Vector3.right)
 		{
-			Vector3 Position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-			
+			//Vector3 Position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+			//transform.parent.rigidbody.useGravity = false;
 			for(int i = 0; i < 10; i++)
 			{
 				yield return new WaitForSeconds(.01f);
-				transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
+				//transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
+				transform.parent.position = Vector3.MoveTowards (transform.parent.position, new Vector3(
+					transform.parent.position.x + .1f,
+					transform.parent.position.y,
+					transform.parent.position.z), 1f);
 			}
+			//transform.parent.rigidbody.useGravity = true;
 		}
 		if(Direction == Vector3.left)
 		{
-			transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
+			for(int i = 0; i < 10; i++)
+			{
+				yield return new WaitForSeconds(.01f);
+				//transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
+				transform.parent.position = Vector3.MoveTowards (transform.parent.position, new Vector3(
+					transform.parent.position.x - .1f,
+					transform.parent.position.y,
+					transform.parent.position.z), 1f);
+			}
 		}
 		if(Direction == Vector3.up)
 		{
-			transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+			transform.parent.rigidbody.useGravity = false;
+			for(int i = 0; i < 10; i++)
+			{
+				yield return new WaitForSeconds(.01f);
+				//transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
+				transform.parent.position = Vector3.MoveTowards (transform.parent.position, new Vector3(
+					transform.parent.position.x,
+					transform.parent.position.y + .1f,
+					transform.parent.position.z), 10f);
+			}
+			transform.parent.rigidbody.useGravity = true;
 		}
 		if(Direction == Vector3.down)
 		{
@@ -73,8 +102,9 @@ public class Move : MonoBehaviour {
 	{
 		RaycastHit hit;
 		
-		if (Physics.Raycast (transform.position, Direction, out hit, 1)) 
+		if (Physics.Raycast (transform.position, Direction, out hit, 1f)) 
 		{
+			Debug.Log ("Not Free to Move");
         	return false;
     	}
 		
