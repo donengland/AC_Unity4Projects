@@ -31,7 +31,7 @@ public class MagneticPull : MonoBehaviour {
 		if(!BlockMoving && col.transform.position.y - transform.position.y < .01)
 			{
 				//Debug.Log (col.gameObject.name);
-				GameObject Target = transform.parent.gameObject;
+				Transform Target = transform.parent.gameObject.transform;
 				col.gameObject.BroadcastMessage ("moveTo", Target);
 			}
 		

@@ -19,7 +19,7 @@ public class Move : MonoBehaviour {
 		
 	
 	
-	IEnumerator moveTo(GameObject Target)
+	IEnumerator moveTo(Vector3 Target)
 	{
 		Vector3 Direction = findDirection(Target);
 		isMoving = true;
@@ -28,10 +28,10 @@ public class Move : MonoBehaviour {
 		//int loopLength = Mathf.Abs (transform.position.x - Target.transform.position);
 		//Debug.Log (loopLength);
 		
-		int loopLength = (int)Vector3.Distance (transform.position, Target.transform.position);
-		//Debug.Log (loopLength);
+		int loopLength = (int)Vector3.Distance (transform.position, Target);
+		Debug.Log (loopLength);
 		
-		for(int i = 0; i < loopLength - 1; i++)
+		for(int i = 0; i < loopLength; i++)
 		{
 			if(!isFreetoMove (Direction))
 			{
@@ -40,7 +40,7 @@ public class Move : MonoBehaviour {
 			}
 			else
 			{
-				//Debug.Log("Testing");
+				Debug.Log("Testing");
 				yield return StartCoroutine(moveOne(Direction));
 			}	
 		}
@@ -111,25 +111,26 @@ public class Move : MonoBehaviour {
 		return true;
 	}
 	
-	Vector3 findDirection(GameObject Target)
+	Vector3 findDirection(Vector3 Target)
 	{
 		
-		if(transform.position.x > Target.transform.position.x)
+		if(transform.position.x > Target.x)
 		{
 			return Vector3.left;
 		}
-		if(transform.position.x < Target.transform.position.x)
+		if(transform.position.x < Target.x)
 		{
 			return Vector3.right;
 		}
-		if(transform.position.y > Target.transform.position.y)
+		if(transform.position.y > Target.y)
 		{
 			return Vector3.down;
 		}
-		if(transform.position.y < Target.transform.position.y)
+		if(transform.position.y < Target.y)
 		{
 			return Vector3.up;
 		}
+		
 		
 		Debug.Log ("Error in findDirection");
 		return Vector3.zero;
