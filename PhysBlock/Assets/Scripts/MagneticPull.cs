@@ -21,7 +21,6 @@ public class MagneticPull : MonoBehaviour {
 	}
 	
 	
-	
 	void OnTriggerStay(Collider col)
 	{
 		//Debug.Log (col.gameObject.name);
@@ -34,6 +33,8 @@ public class MagneticPull : MonoBehaviour {
 				Transform Target = transform.parent.gameObject.transform;
 				col.gameObject.BroadcastMessage ("moveTo", Target);
 			}
+		
+		
 		
 	}
 	

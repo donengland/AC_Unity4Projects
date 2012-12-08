@@ -5,34 +5,18 @@ public class Move : MonoBehaviour {
 	
 	public bool isMoving;
 	
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	
-	}
-		
-	
-	
 	IEnumerator moveTo(Vector3 Target)
 	{
+		Debug.Log ("Move to was called");
 		Vector3 Direction = findDirection(Target);
 		isMoving = true;
 		
-		//Debug.Log (Vector3.Distance (transform.position, Target.transform.position));
-		//int loopLength = Mathf.Abs (transform.position.x - Target.transform.position);
-		//Debug.Log (loopLength);
 		
-		int loopLength = (int)Vector3.Distance (transform.position, Target);
-		Debug.Log (loopLength);
+		int loopLength = (int)Mathf.RoundToInt (Vector3.Distance (transform.position, Target));
 		
 		for(int i = 0; i < loopLength; i++)
 		{
+			//Move one spot over, until you're either not free to move, or you reach the target
 			if(!isFreetoMove (Direction))
 			{
 				isMoving = false;
@@ -40,7 +24,6 @@ public class Move : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log("Testing");
 				yield return StartCoroutine(moveOne(Direction));
 			}	
 		}
@@ -52,25 +35,20 @@ public class Move : MonoBehaviour {
 		//Already know we're free to move in Direction, just going to move 1 space over
 		if(Direction == Vector3.right)
 		{
-			//Vector3 Position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-			//transform.parent.rigidbody.useGravity = false;
 			for(int i = 0; i < 10; i++)
 			{
 				yield return new WaitForSeconds(.01f);
-				//transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
 				transform.parent.position = Vector3.MoveTowards (transform.parent.position, new Vector3(
 					transform.parent.position.x + .1f,
 					transform.parent.position.y,
 					transform.parent.position.z), 1f);
 			}
-			//transform.parent.rigidbody.useGravity = true;
 		}
 		if(Direction == Vector3.left)
 		{
 			for(int i = 0; i < 10; i++)
 			{
 				yield return new WaitForSeconds(.01f);
-				//transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
 				transform.parent.position = Vector3.MoveTowards (transform.parent.position, new Vector3(
 					transform.parent.position.x - .1f,
 					transform.parent.position.y,
@@ -83,7 +61,6 @@ public class Move : MonoBehaviour {
 			for(int i = 0; i < 10; i++)
 			{
 				yield return new WaitForSeconds(.01f);
-				//transform.parent.position = new Vector3(transform.position.x + .1f, transform.position.y, transform.position.z);
 				transform.parent.position = Vector3.MoveTowards (transform.parent.position, new Vector3(
 					transform.parent.position.x,
 					transform.parent.position.y + .1f,
@@ -104,11 +81,41 @@ public class Move : MonoBehaviour {
 		
 		if (Physics.Raycast (transform.position, Direction, out hit, 1f)) 
 		{
+			//If something is in the way of the movement, don't move
 			Debug.Log ("Not Free to Move");
         	return false;
     	}
 		
+		if (gameObject.name == "HeavyNMPBlok(Clone)")
+		{
+			//If you're a heavy block, you can only move if you're ontop of frozen or nothing
+			if(OntopOf () == PBlokConstants.blokAct.surface_frozen || OntopOf () == PBlokConstants.blokAct.empty)
+			{
+				return true;
+			}
+			else{
+				
+				Debug.Log ("HeavyBlok returned false in isFreetoMove");
+				return false;
+			}
+		}
+		
+		
+		
 		return true;
+	}
+	
+	PBlokConstants.blokAct OntopOf()
+	{
+		RaycastHit hit;
+		
+		if(Physics.Raycast (transform.position, Vector3.down, out hit, 1f))
+		{
+			return hit.collider.GetComponent<PBlok>().getAct ();
+			
+		}
+	
+		return PBlokConstants.blokAct.empty;
 	}
 	
 	Vector3 findDirection(Vector3 Target)

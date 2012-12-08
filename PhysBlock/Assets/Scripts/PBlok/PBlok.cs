@@ -188,4 +188,5 @@ public class PBlok : MonoBehaviour {
 		Debug.Log(gameObject.transform.parent.gameObject.name + " is colliding with " +
 			col.gameObject.transform.parent.gameObject.name);
 	}
+	
 }
