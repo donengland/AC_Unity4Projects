@@ -7,6 +7,8 @@ using System.Collections;
 
 public class PlayerReset : MonoBehaviour {
 	
+	public Transform background;
+	
 	public LangmanController playerScript;
 	
 	// Use this for initialization
@@ -24,5 +26,7 @@ public class PlayerReset : MonoBehaviour {
 		Debug.Log(col.gameObject.name);
 		if(col.gameObject.transform.parent.gameObject.name == "Player")
 			playerScript.Spawn();
+		//Reset background so it doesn't disappear
+		background.SendMessage("Reset");
 	}
 }

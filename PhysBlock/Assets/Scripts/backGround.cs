@@ -5,7 +5,7 @@ using System.Collections;
 public class backGround : MonoBehaviour {
 	
 	private Texture2D texture;
-	private Checkerboard checkerNoise;
+	private Perlin perlinNoise;
 	
 	// Use this for initialization
 	void Start () {
@@ -14,7 +14,7 @@ public class backGround : MonoBehaviour {
 		texture.wrapMode = TextureWrapMode.Repeat;
 		
 		//Create Voronoi noise
-		checkerNoise = new Checkerboard();
+		perlinNoise = new Perlin();
 		
 		gameObject.renderer.material.mainTexture = texture;
 		
@@ -25,8 +25,8 @@ public class backGround : MonoBehaviour {
 		
 		for(int i = 0; i < pixels; i++){
 			float depth = Time.time/2f;
-			float value =(float)checkerNoise.GetValue((float)(i % width) / width * 4f, depth, i / width / (float)width * 4f);
-			colors[i] = new Color(value, value, value);
+			float value =(float)perlinNoise.GetValue((float)(i % width) / width * 4f, depth, i / width / (float)width * 4f);
+			colors[i] = new Color(1f-value, 1f-value, 1f-(value * .5f));
 		}
 		texture.SetPixels(colors);
 		texture.Apply();
@@ -34,40 +34,10 @@ public class backGround : MonoBehaviour {
 		//StartCoroutine(UpdateImage());
 	}
 	
-	// Update is called once per frame
-	/*
-	void FixedUpdate () {
-		int pixels = texture.width * texture.height;
-		int width = texture.width;
-		int height = texture.height;
-		Color[] colors = new Color[pixels];
-		for(int i = 0; i < pixels; i++){
-			float depth = Time.time/2f;
-			float value =(float)checkerNoise.GetValue((float)(i % width) / width * 4f, depth, i / width / (float)width * 4f);
-			colors[i] = new Color(value, value, value);
-		}
-		texture.SetPixels(colors);
-		texture.Apply();
-	}*/
-	
-	private IEnumerator UpdateImage(){
-		int pixels = texture.width * texture.height;
-		int width = texture.width;
-		int height = texture.height;
-		Color[] colors = new Color[pixels];
-		
-		while(true){
-			for(int i = 0; i < pixels; i++){
-				float depth = Time.time/2f;
-				float value =(float)checkerNoise.GetValue((float)(i % width) / width * 4f, depth, i / width / (float)width * 4f);
-				colors[i] = new Color(value, value, value);
-			}
-			texture.SetPixels(colors);
-			texture.Apply();
-			yield return null;
-		}
+	void FixedUpdate(){
+		float scaleX = Mathf.Cos (Time.time * .1f) * 0.5f + 1f;
+    	float scaleY = Mathf.Sin (Time.time * .1f) * 0.5f + 1f;
+    	gameObject.renderer.material.mainTextureScale = new Vector2(scaleX,scaleY);	
 	}
-	
-	
 	
 }
