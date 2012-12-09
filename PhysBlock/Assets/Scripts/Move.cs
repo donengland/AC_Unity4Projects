@@ -93,16 +93,26 @@ public class Move : MonoBehaviour {
 			{
 				return true;
 			}
-			else{
+			else
+			{
 				
 				Debug.Log ("HeavyBlok returned false in isFreetoMove");
 				return false;
 			}
 		}
+		else if(gameObject.name == "NormalNMPBlok(Clone)")
+		{
+			
+			return true;
 		
+		}
+		else
+		{
+			
+			return false;
+			
+		}
 		
-		
-		return true;
 	}
 	
 	PBlokConstants.blokAct OntopOf()
