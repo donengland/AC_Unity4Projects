@@ -25,10 +25,12 @@ public class Click : MonoBehaviour {
 		{
 			if (Physics.Raycast(ray, out hit, Mathf.Infinity) && hit.transform != null)
 			{
+				Debug.Log (hit.collider.name);
 				if(hit.collider.gameObject.name == "PBlok(Clone)")
 				{
 					if(hit.collider.GetComponent<PBlok>().getPotency() == PBlokConstants.blokPotency.modify)
 					{
+						
 						switch(hit.collider.GetComponent<PBlok>().getAct ())
 						{
 							case PBlokConstants.blokAct.block_frozen:
@@ -72,11 +74,11 @@ public class Click : MonoBehaviour {
 			FunctionB = PBlokConstants.blokAct.block_frozen;
 		}
 		if (GUI.Button (new Rect(440, 300, 120, 40), "Heavy")){
-			FunctionS = PBlokConstants.blokAct.block_heavy;
+			FunctionB = PBlokConstants.blokAct.block_heavy;
 		}
 		if (GUI.Button (new Rect(560, 300, 120, 40), "Normal")){
-			FunctionB = PBlokConstants.blokAct.surface_normal;
-			FunctionS = PBlokConstants.blokAct.block_normal;
+			FunctionS = PBlokConstants.blokAct.surface_normal;
+			FunctionB = PBlokConstants.blokAct.block_normal;
 		}
 	}
 	

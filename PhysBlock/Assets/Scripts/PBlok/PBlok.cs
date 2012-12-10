@@ -156,14 +156,16 @@ public class PBlok : MonoBehaviour {
 	}
 	
 	// in-game change requests
-	public void requestChangeAct(PBlokConstants.blokAct act){
+	public bool requestChangeAct(PBlokConstants.blokAct act){
 		if(myPotency == PBlokConstants.blokPotency.modify){
 			setAct (act);
+			return true;
 		}
 		else{
 			Debug.Log("Invalid request for change on "
 				+ gameObject.name + "from ( " + myAct + " )" + " to "
 				+ "( " + act + " ) object unmodifiable");
+			return false;
 		}
 	}
 	

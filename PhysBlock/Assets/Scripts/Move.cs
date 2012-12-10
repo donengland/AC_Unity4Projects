@@ -3,7 +3,29 @@ using System.Collections;
 
 public class Move : MonoBehaviour {
 	
-	public bool isMoving;
+	public bool isMoving = false;
+	private bool isInMagnet;
+	private GameObject Magnet;
+	
+	void FixedUpdate()
+	{
+	}
+	
+	public bool getisInMagnet()
+	{
+		return isInMagnet;
+	}
+	
+	public void setMagnetFalse()
+	{
+		isInMagnet = false;
+	}
+	
+	public void setMagnetTrue()
+	{
+		isInMagnet = true;
+	}
+	
 	
 	IEnumerator moveTo(Vector3 Target)
 	{
@@ -151,6 +173,14 @@ public class Move : MonoBehaviour {
 		
 		Debug.Log ("Error in findDirection");
 		return Vector3.zero;
+	}
+	
+	
+	void OnTriggerExit()
+	{
+		Debug.Log ("On Trigger Exit Called");
+		setMagnetFalse();
+		transform.parent.rigidbody.isKinematic = false;
 	}
 	
 	
