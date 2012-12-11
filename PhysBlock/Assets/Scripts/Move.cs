@@ -4,7 +4,7 @@ using System.Collections;
 public class Move : MonoBehaviour {
 	
 	public bool isMoving = false;
-	private bool isInMagnet;
+	private bool isInMagnet = false;
 	private GameObject Magnet;
 	
 	void FixedUpdate()

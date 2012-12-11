@@ -10,7 +10,7 @@ public class Click : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		FunctionS = PBlokConstants.blokAct.surface_magnetic;
-		FunctionB = PBlokConstants.blokAct.block_frozen;
+		FunctionB = PBlokConstants.blokAct.block_heavy;
 	}
 	
 	// Update is called once per frame
@@ -71,7 +71,7 @@ public class Click : MonoBehaviour {
 		
 		if (GUI.Button (new Rect(320, 300, 120, 40), "Frozen")){
 			FunctionS = PBlokConstants.blokAct.surface_frozen;
-			FunctionB = PBlokConstants.blokAct.block_frozen;
+			//FunctionB = PBlokConstants.blokAct.block_frozen;
 		}
 		if (GUI.Button (new Rect(440, 300, 120, 40), "Heavy")){
 			FunctionB = PBlokConstants.blokAct.block_heavy;

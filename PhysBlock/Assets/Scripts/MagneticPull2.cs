@@ -31,7 +31,8 @@ public class MagneticPull2 : MonoBehaviour {
 			{
 				PBlok pblok = hit.collider.GetComponent<PBlok>();
 				
-				if(pblok.getAct() == PBlokConstants.blokAct.block_normal)
+				if(pblok.getAct() == PBlokConstants.blokAct.block_normal ||
+					pblok.getAct () == PBlokConstants.blokAct.block_heavy)
 				{
 					Move move = hit.collider.gameObject.GetComponentInChildren<Move>();
 					
@@ -68,7 +69,8 @@ public class MagneticPull2 : MonoBehaviour {
 			{
 				PBlok pblok = hit.collider.GetComponent<PBlok>();
 				
-				if(pblok.getAct() == PBlokConstants.blokAct.block_normal)
+				if(pblok.getAct() == PBlokConstants.blokAct.block_normal ||
+					pblok.getAct () == PBlokConstants.blokAct.block_heavy)
 				{
 					Move move = hit.collider.gameObject.GetComponentInChildren<Move>();
 					
