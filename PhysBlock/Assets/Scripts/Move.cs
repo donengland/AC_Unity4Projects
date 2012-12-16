@@ -29,27 +29,30 @@ public class Move : MonoBehaviour {
 	
 	IEnumerator moveTo(Vector3 Target)
 	{
-		Debug.Log ("Move to was called");
-		Vector3 Direction = findDirection(Target);
-		isMoving = true;
-		
-		
-		int loopLength = (int)Mathf.RoundToInt (Vector3.Distance (transform.position, Target));
-		
-		for(int i = 0; i < loopLength; i++)
+		if(!(Vector3.Distance (transform.position, Target) < .9))
 		{
-			//Move one spot over, until you're either not free to move, or you reach the target
-			if(!isFreetoMove (Direction))
+			Debug.Log ("Move to was called");
+			Debug.Log (Vector3.Distance (transform.position, Target));
+			Vector3 Direction = findDirection(Target);
+			isMoving = true;
+			
+			int loopLength = (int)Mathf.RoundToInt (Vector3.Distance (transform.position, Target));
+			
+			for(int i = 0; i < loopLength; i++)
 			{
-				isMoving = false;
-				yield break;
+				//Move one spot over, until you're either not free to move, or you reach the target
+				if(!isFreetoMove (Direction))
+				{
+					isMoving = false;
+					yield break;
+				}
+				else
+				{
+					yield return StartCoroutine(moveOne(Direction));
+				}	
 			}
-			else
-			{
-				yield return StartCoroutine(moveOne(Direction));
-			}	
+			isMoving = false;
 		}
-		isMoving = false;
 	}
 	
 	IEnumerator moveOne(Vector3 Direction)
@@ -153,21 +156,27 @@ public class Move : MonoBehaviour {
 	Vector3 findDirection(Vector3 Target)
 	{
 		
-		if(transform.position.x > Target.x)
+		if(Mathf.Abs(transform.position.x - Target.x) > .05f)
 		{
-			return Vector3.left;
+			if(transform.position.x > Target.x)
+			{
+				return Vector3.left;
+			}
+			if(transform.position.x < Target.x)
+			{
+				return Vector3.right;
+			}
 		}
-		if(transform.position.x < Target.x)
+		if(Mathf.Abs (transform.position.y - Target.y) > .05f)
 		{
-			return Vector3.right;
-		}
-		if(transform.position.y > Target.y)
-		{
-			return Vector3.down;
-		}
-		if(transform.position.y < Target.y)
-		{
-			return Vector3.up;
+			if(transform.position.y > Target.y)
+			{
+				return Vector3.down;
+			}
+			if(transform.position.y < Target.y)
+			{
+				return Vector3.up;
+			}
 		}
 		
 		

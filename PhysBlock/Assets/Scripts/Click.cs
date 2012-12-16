@@ -46,7 +46,11 @@ public class Click : MonoBehaviour {
 								hit.collider.GetComponent<PBlok>().requestChangeAct (FunctionS);
 								break;
 							case PBlokConstants.blokAct.surface_magnetic:
-								hit.collider.GetComponent<PBlok>().requestChangeAct (FunctionS);
+								if(FunctionS != PBlokConstants.blokAct.surface_magnetic)
+								{
+									hit.collider.GetComponent<PBlok>().requestChangeAct (FunctionS);
+									break;
+								}
 								break;
 							case PBlokConstants.blokAct.surface_normal:
 								hit.collider.GetComponent<PBlok>().requestChangeAct (FunctionS);

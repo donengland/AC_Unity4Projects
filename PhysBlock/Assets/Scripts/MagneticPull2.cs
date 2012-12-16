@@ -11,7 +11,11 @@ public class MagneticPull2 : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	
-
+	}
+	
+	void Awake()
+	{
+		
 	}
 	
 	// Update is called once per frame
@@ -23,7 +27,7 @@ public class MagneticPull2 : MonoBehaviour {
 		hitsUp    = Physics.RaycastAll (transform.position, Vector3.up, 20f);
 		hitsDown  = Physics.RaycastAll (transform.position, Vector3.down, 20f);
 		
-		Debug.DrawLine (transform.position, transform.position + Vector3.right *20, Color.blue, 20f);
+		//Debug.DrawLine (transform.position, transform.position + Vector3.right *20, Color.blue, 20f);
 		
 		foreach(RaycastHit hit in hitsRight)
 		{
@@ -43,7 +47,7 @@ public class MagneticPull2 : MonoBehaviour {
 					
 					if(!move.getisInMagnet())
 					{
-						Vector3 Target = transform.position;
+						Vector3 Target = transform.position + Vector3.right;
 						hit.collider.gameObject.BroadcastMessage ("moveTo", Target);
 						hit.collider.rigidbody.isKinematic = true;
 						hit.collider.rigidbody.useGravity = false;
@@ -81,7 +85,7 @@ public class MagneticPull2 : MonoBehaviour {
 					
 					if(!move.getisInMagnet())
 					{
-						Vector3 Target = transform.position;
+						Vector3 Target = transform.position + Vector3.left;
 						hit.collider.gameObject.BroadcastMessage ("moveTo", Target);
 						hit.collider.rigidbody.isKinematic = true;
 						hit.collider.rigidbody.useGravity = false;
@@ -119,7 +123,7 @@ public class MagneticPull2 : MonoBehaviour {
 					
 					if(!move.getisInMagnet())
 					{
-						Vector3 Target = transform.position;
+						Vector3 Target = transform.position + Vector3.up;
 						hit.collider.gameObject.BroadcastMessage ("moveTo", Target);
 						hit.collider.rigidbody.isKinematic = true;
 						hit.collider.rigidbody.useGravity = false;
@@ -158,7 +162,9 @@ public class MagneticPull2 : MonoBehaviour {
 					
 					if(!move.getisInMagnet())
 					{
-						Vector3 Target = transform.position;
+						Vector3 Target = transform.position + Vector3.down;
+						Debug.DrawLine (transform.position, Target, Color.green,200f);
+						Debug.Log (Target);
 						hit.collider.gameObject.BroadcastMessage ("moveTo", Target);
 						hit.collider.rigidbody.isKinematic = true;
 						hit.collider.rigidbody.useGravity = false;
@@ -169,10 +175,10 @@ public class MagneticPull2 : MonoBehaviour {
 					
 					if(!(Mathf.Abs (transform.position.x - hit.collider.transform.position.x) <.01))
 					{
-						hit.collider.transform.position = Vector3.MoveTowards (hit.collider.transform.position, new Vector3(
+						/*hit.collider.transform.position = Vector3.MoveTowards (hit.collider.transform.position, new Vector3(
 							transform.position.x,
 							hit.collider.transform.position.y,
-							hit.collider.transform.position.z),1f);
+							hit.collider.transform.position.z),1f);*/
 					}
 				}
 			
@@ -234,6 +240,7 @@ public class MagneticPull2 : MonoBehaviour {
 		{
 			if(hit.collider.name == "PBlok(Clone)")
 			{
+				
 				PBlok pblok = hit.collider.GetComponent<PBlok>();
 				if(pblok.getAct() == PBlokConstants.blokAct.block_normal)
 				{
