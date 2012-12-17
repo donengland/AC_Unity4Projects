@@ -131,6 +131,10 @@ public class Move : MonoBehaviour {
 			return true;
 		
 		}
+		else if(gameObject.name == "NormalMPBlok(Clone)")
+		{
+			return true;
+		}
 		else
 		{
 			

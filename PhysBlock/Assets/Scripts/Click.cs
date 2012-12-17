@@ -5,12 +5,30 @@ public class Click : MonoBehaviour {
 	
 	private PBlokConstants.blokAct FunctionS;
 	private PBlokConstants.blokAct FunctionB;
+	private bool hasMagnetic = true;
+	private bool hasFrozen;
+	private bool hasNormal;
 	private GameObject HitHolder;
 	
 	// Use this for initialization
 	void Start () {
 		FunctionS = PBlokConstants.blokAct.surface_magnetic;
 		FunctionB = PBlokConstants.blokAct.block_heavy;
+	}
+	
+	public void SetMagnetic(bool status)
+	{
+		hasMagnetic = status;
+	}
+	
+	public void SetFrozen(bool status)
+	{
+		hasFrozen = status;
+	}
+	
+	public void SetNorm(bool status)
+	{
+		hasNormal = status;
 	}
 	
 	// Update is called once per frame
@@ -69,20 +87,26 @@ public class Click : MonoBehaviour {
 	}
 	
 	void OnGUI () {
-		if (GUI.Button (new Rect (200, 400, 120, 40), "Magnetic")) {
-			FunctionS = PBlokConstants.blokAct.surface_magnetic;
+		if(hasMagnetic)
+		{
+			if (GUI.Button (new Rect (200, 400, 120, 40), "Magnetic")) {
+				FunctionS = PBlokConstants.blokAct.surface_magnetic;
+			}
 		}
 		
-		if (GUI.Button (new Rect(320, 400, 120, 40), "Frozen")){
-			FunctionS = PBlokConstants.blokAct.surface_frozen;
-			//FunctionB = PBlokConstants.blokAct.block_frozen;
+		if(hasFrozen)
+		{
+			if (GUI.Button (new Rect(320, 400, 120, 40), "Frozen")){
+				FunctionS = PBlokConstants.blokAct.surface_frozen;
+				//FunctionB = PBlokConstants.blokAct.block_frozen;
+			}
 		}
-		if (GUI.Button (new Rect(440, 400, 120, 40), "Heavy")){
-			FunctionB = PBlokConstants.blokAct.block_heavy;
-		}
-		if (GUI.Button (new Rect(560, 400, 120, 40), "Normal")){
-			FunctionS = PBlokConstants.blokAct.surface_normal;
-			FunctionB = PBlokConstants.blokAct.block_normal;
+		if(hasNormal)
+		{
+			if (GUI.Button (new Rect(560, 400, 120, 40), "Normal")){
+				FunctionS = PBlokConstants.blokAct.surface_normal;
+				FunctionB = PBlokConstants.blokAct.block_normal;
+			}
 		}
 	}
 	

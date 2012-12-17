@@ -175,10 +175,10 @@ public class MagneticPull2 : MonoBehaviour {
 					
 					if(!(Mathf.Abs (transform.position.x - hit.collider.transform.position.x) <.01))
 					{
-						/*hit.collider.transform.position = Vector3.MoveTowards (hit.collider.transform.position, new Vector3(
+						hit.collider.transform.position = Vector3.MoveTowards (hit.collider.transform.position, new Vector3(
 							transform.position.x,
 							hit.collider.transform.position.y,
-							hit.collider.transform.position.z),1f);*/
+							hit.collider.transform.position.z),1f);
 					}
 				}
 			
