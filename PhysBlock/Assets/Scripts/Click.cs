@@ -5,9 +5,9 @@ public class Click : MonoBehaviour {
 	
 	private PBlokConstants.blokAct FunctionS;
 	private PBlokConstants.blokAct FunctionB;
-	private bool hasMagnetic = true;
-	private bool hasFrozen;
-	private bool hasNormal;
+	public bool hasMagnetic = true;
+	public bool hasFrozen = false;
+	public bool hasNormal = false;
 	private GameObject HitHolder;
 	
 	// Use this for initialization
@@ -103,7 +103,7 @@ public class Click : MonoBehaviour {
 		}
 		if(hasNormal)
 		{
-			if (GUI.Button (new Rect(560, 400, 120, 40), "Normal")){
+			if (GUI.Button (new Rect(440, 400, 120, 40), "Normal")){
 				FunctionS = PBlokConstants.blokAct.surface_normal;
 				FunctionB = PBlokConstants.blokAct.block_normal;
 			}
