@@ -89,21 +89,21 @@ public class Click : MonoBehaviour {
 	void OnGUI () {
 		if(hasMagnetic)
 		{
-			if (GUI.Button (new Rect (200, 400, 120, 40), "Magnetic")) {
+			if (GUI.Button (new Rect ((Screen.width*3f)/10f, (Screen.height*4f)/5f, 120, 40), "Magnetic")) {
 				FunctionS = PBlokConstants.blokAct.surface_magnetic;
 			}
 		}
 		
 		if(hasFrozen)
 		{
-			if (GUI.Button (new Rect(320, 400, 120, 40), "Frozen")){
+			if (GUI.Button (new Rect((Screen.width*5f)/10f, (Screen.height*4f)/5f, 120, 40), "Frozen")){
 				FunctionS = PBlokConstants.blokAct.surface_frozen;
 				//FunctionB = PBlokConstants.blokAct.block_frozen;
 			}
 		}
 		if(hasNormal)
 		{
-			if (GUI.Button (new Rect(440, 400, 120, 40), "Normal")){
+			if (GUI.Button (new Rect((Screen.width*7f)/10f, (Screen.height*4f)/5f, 120, 40), "Normal")){
 				FunctionS = PBlokConstants.blokAct.surface_normal;
 				FunctionB = PBlokConstants.blokAct.block_normal;
 			}
