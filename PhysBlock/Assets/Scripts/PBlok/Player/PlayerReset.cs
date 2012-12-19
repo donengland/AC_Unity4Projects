@@ -13,7 +13,7 @@ public class PlayerReset : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		playerScript = GameObject.Find ("Player_bot").GetComponent<LangmanController>();
+		playerScript = GameObject.Find ("PlayerSphere").GetComponent<LangmanController>();
 	}
 	
 	// Update is called once per frame
